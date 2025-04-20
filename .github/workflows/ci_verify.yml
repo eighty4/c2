@@ -1,0 +1,19 @@
+name: Verify
+run-name: "Verify ${{ github.pull_request && format('PR: {0}', github.pull_request.title) || github.ref }}"
+on:
+  push:
+  pull_request:
+    branches: [main]
+  workflow_call:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: rm /usr/local/bin/node
+      - uses: oven-sh/setup-bun@v2
+      - run: bun i
+      - run: bun test
+      - run: bun typecheck
+      - run: bun fmtcheck
+      - run: echo 'Ba'

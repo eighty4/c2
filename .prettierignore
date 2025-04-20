@@ -1,0 +1,5 @@
+bun.lock
+examples/**/*.img
+examples/**/*.iso
+lib_types/**/*.d.ts
+
