@@ -38,10 +38,8 @@ async function evaluate(expression: string): Promise<string> {
     let match: RegExpMatchArray | null
     if ((match = expression.match(/env\(\s*'(.*)'\s*\)/)) != null) {
         const envVarKey = match[1]
-        if (!/[A-Z_]+/.test(envVarKey)) {
-            throw new Error(
-                `env var expression \`${envVarKey}\` is not valid syntax`,
-            )
+        if (!/^[A-Z_][A-Z_\d]+$/.test(envVarKey)) {
+            throw new Error(`env var \`${envVarKey}\` is not a valid name`)
         }
         const envVarValue = process.env[envVarKey]
         if (!envVarValue) {

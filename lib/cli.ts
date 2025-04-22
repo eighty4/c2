@@ -7,25 +7,35 @@ export type ParsedArgs =
           userDataDir: string
       }
 
-export function parseArgs(args?: Array<string>): ParsedArgs {
-    if (!args) {
-        args = process.argv
+const SCRIPT_SUFFIXES = Object.freeze([
+    '/c2',
+    '/lib_js/c2.bin.js',
+    '/lib/c2.bin.ts',
+])
+
+export function parseArgs(input?: Array<string>): ParsedArgs {
+    if (!input) {
+        input = process.argv
     }
-    args = [...args]
-    let shifted
-    while ((shifted = args.shift())) {
-        if (
-            shifted.endsWith('/lib_js/c2.bin.js') ||
-            shifted.endsWith('/lib/c2.bin.ts')
-        ) {
+    let parsing: Array<string> = [...input]
+    let shifted: string | undefined
+    let found_cli: boolean = false
+    while ((shifted = parsing.shift())) {
+        if (SCRIPT_SUFFIXES.some(suffix => shifted!.endsWith(suffix))) {
+            found_cli = true
             break
         }
+    }
+    if (!found_cli) {
+        throw new Error(
+            `unexpected program installation\nplease report at https://github.com/eighty4/c2/issues/new and include:\n\n${JSON.stringify(input, null, 4)}`,
+        )
     }
     let base64 = false
     let httpPort: number | undefined
     let userData: Array<string> = []
     let expectHttpPort = false
-    for (const arg of args) {
+    for (const arg of parsing) {
         if (expectHttpPort) {
             expectHttpPort = false
             httpPort = parseInt(arg, 10)

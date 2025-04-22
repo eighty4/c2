@@ -32,6 +32,14 @@ test('env() not found', async () => {
     )
 })
 
+test('env() name not valid', async () => {
+    ;['2_NOT_VALID', 'NOT=VALID', 'NOT@VALID'].forEach(envVar =>
+        expect(() =>
+            evalTemplateExpressions(`\${{ env('${envVar}') }}`),
+        ).toThrow(`env var \`${envVar}\` is not a valid name`),
+    )
+})
+
 test('file() not found', async () => {
     const path = join(await makeTempDir(), 'whoopie')
     expect(() => evalTemplateExpressions(`\${{ file('${path}') }}`)).toThrow(

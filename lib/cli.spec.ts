@@ -14,6 +14,19 @@ test('parseArgs with ts entrypoint', () => {
     })
 })
 
+test('parseArgs with executable entrypoint', () => {
+    expect(
+        parseArgs([
+            '/Users/who/.nvm/versions/node/v23.7.0/bin/node',
+            '/Users/who/.nvm/versions/node/v23.7.0/bin/c2',
+            'user_data_dir',
+        ]),
+    ).toStrictEqual({
+        base64: false,
+        userDataDir: 'user_data_dir',
+    })
+})
+
 test('parseArgs with js entrypoint', () => {
     expect(
         parseArgs([
@@ -25,6 +38,12 @@ test('parseArgs with js entrypoint', () => {
         base64: false,
         userDataDir: 'user_data_dir',
     })
+})
+
+test('parseArgs with unexepected argv', () => {
+    expect(() => parseArgs(['tippity', 'doo', 'da'])).toThrow(
+        'unexpected program installation\nplease report at https://github.com/eighty4/c2/issues/new and include:\n\n[\n    \"tippity\",\n    \"doo\",\n    \"da\"\n]',
+    )
 })
 
 test('parseArgs errors without USER_DATA_DIR', () => {
@@ -44,7 +63,7 @@ test('parseArgs errors with extra USER_DATA_DIR', () => {
             'user_data_dir',
             'some_other_arg',
         ]),
-    ).toThrow('')
+    ).toThrow()
 })
 
 test('parseArgs with --base64', () => {

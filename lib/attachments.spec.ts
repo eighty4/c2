@@ -9,7 +9,7 @@ beforeEach(async () => (tmpDir = await makeTempDir()))
 
 afterEach(async () => await removeDir(tmpDir))
 
-test('collect throws error when yml does not have #cloud-config comment', async () => {
+test('collect throws error for unknown filetype', async () => {
     await makeFile('init-cloud', 'whoopie', tmpDir)
     await expect(() => collectAttachments(tmpDir)).toThrow(
         'init-cloud is an unsupported file type',
@@ -23,6 +23,19 @@ test('collect cloud config yml', async () => {
             path: join(tmpDir, 'init-cloud.yml'),
             content: '#cloud-config\nwhoopie',
             filename: 'init-cloud.yml',
+            source: '#cloud-config\nwhoopie',
+            type: 'cloud-config',
+        },
+    ])
+})
+
+test('collect cloud config yaml', async () => {
+    await makeFile('init-cloud.yaml', '#cloud-config\nwhoopie', tmpDir)
+    expect(await collectAttachments(tmpDir)).toStrictEqual([
+        {
+            path: join(tmpDir, 'init-cloud.yaml'),
+            content: '#cloud-config\nwhoopie',
+            filename: 'init-cloud.yaml',
             source: '#cloud-config\nwhoopie',
             type: 'cloud-config',
         },
