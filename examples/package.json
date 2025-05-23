@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@aws-sdk/client-ec2": "^3.794.0",
+    "@linode/api-v4": "^0.138.0",
+    "dots-wrapper": "^3"
+  }
+}

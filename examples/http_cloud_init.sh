@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+_port=8202
+
 if ! command -v "qemu-system-x86_64" &> /dev/null; then
   echo "install QEMU to run this script"
   exit 1
@@ -25,11 +27,11 @@ mkdir -p "$_config_dir"
 touch "$_config_dir/meta-data"
 touch "$_config_dir/vendor-data"
 
-if command -v "c2" &> /dev/null; then
-  c2 cloud_init --http 8202
-else
-  npx -p @eighty4/c2 c2 cloud_init --http 8202
-fi
+#if command -v "c2" &> /dev/null; then
+#  c2 cloud_init --http $_port > /dev/null 2>&1 &
+#else
+#  npx -p @eighty4/c2 c2 cloud_init --http $_port > /dev/null 2>&1 &
+#fi
 
 _http_pid=$!
 
@@ -41,7 +43,7 @@ function cleanup()
 trap cleanup EXIT
 
 echo
-echo "\`c2 cloud_init --http\` is running in background serving cloud-init data at http://localhost:8000/user-data"
+echo "\`c2 cloud_init --http\` is running in background serving cloud-init data at http://localhost:$_port/user-data"
 echo
 echo "QEMU will start the Ubuntu image in this shell."
 echo
@@ -58,4 +60,4 @@ qemu-system-x86_64 \
   -net nic \
   -net user \
   -drive "file=$_build_dir/http.$_ubuntu_img,index=0,format=qcow2,media=disk" \
-  -smbios type=1,serial=ds='nocloud;s=http://10.0.2.2:8000/'
+  -smbios type=1,serial=ds='nocloud;s=http://10.0.2.2:'$_port'/'
