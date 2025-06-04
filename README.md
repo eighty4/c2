@@ -2,6 +2,9 @@
 
 Blow up your `cloud-init` developer workflows!
 
+See the [examples dir](https://github.com/eighty4/c2/tree/main/examples) for
+examples running on your local machine or deploying to cloud providers.
+
 ## Getting started
 
 ```shell
@@ -9,7 +12,8 @@ npm i -g @eighty4/c2
 c2 -h
 ```
 
-(tests use `bun:test` so [install Bun](https://bun.sh/docs/installation) for contributing!)
+(tests use `bun:test` so [install Bun](https://bun.sh/docs/installation)
+for contributing!)
 
 ## Using the CLI program
 
@@ -30,7 +34,8 @@ const userData: string = await buildUserData('./cloud_init_dir')
 
 ## Cloud Config data dir
 
-Multiple user data are ordered by filenames and `01_` numbered prefixes help declare execution order.
+Multiple user data are ordered by filenames and `01_` numbered prefixes help
+declare execution order.
 
 ```
 ls ./cloud_init_dir
@@ -39,11 +44,13 @@ ls ./cloud_init_dir
 03_services.sh
 ```
 
-Shell scripts are supported as `x-shellscript` and YAML is included as `cloud-config` MIME types.
+Shell scripts are supported as `x-shellscript` and YAML is included as
+`cloud-config` MIME types.
 
 ## Evaluating expressions in user data
 
-Scripts and YAML support two template functions that can be used in expressions.
+Scripts and YAML support two template functions that can be used in
+expressions.
 
 ### env()
 
@@ -57,7 +64,8 @@ ENV_VAR="${{ env('LOCAL_ENV_VAR') }}"
 
 ### file()
 
-Looks up a file from your local filesystem and replaces the expression with its content.
+Looks up a file from your local filesystem and replaces the expression with
+its content.
 
 ```yaml
 #cloud-config
@@ -72,6 +80,7 @@ Relative, absolute and `~/` paths are supported.
 
 ## Contributing
 
-I use `c2` for initializing Debian cloud instances and locally test with QEMU and Ubuntu.
+I use `c2` for initializing Debian cloud instances and locally test with QEMU
+and Ubuntu.
 
 Feedback on your use cases and worfklows is greatly appreciated!

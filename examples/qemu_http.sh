@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+_port=8202
+
 if ! command -v "qemu-system-x86_64" &> /dev/null; then
   echo "install QEMU to run this script"
   exit 1
@@ -18,7 +20,7 @@ if ! stat "$_build_dir/images/$_ubuntu_img" &> /dev/null; then
 fi
 
 rm -f "$_build_dir/$_ubuntu_img"
-cp "$_build_dir/images/$_ubuntu_img" "$_build_dir/$_ubuntu_img"
+cp "$_build_dir/images/$_ubuntu_img" "$_build_dir/http.$_ubuntu_img"
 
 _config_dir="$_build_dir/config"
 mkdir -p "$_config_dir"
@@ -26,29 +28,22 @@ touch "$_config_dir/meta-data"
 touch "$_config_dir/vendor-data"
 
 if command -v "c2" &> /dev/null; then
-  c2 cloud_init > .qemu/config/user-data
+  c2 cloud_init --http $_port > /dev/null 2>&1 &
 else
-  npx -p @eighty4/c2 c2 cloud_init > .qemu/config/user-data
+  npx --yes -p @eighty4/c2 c2 cloud_init --http $_port > /dev/null 2>&1 &
 fi
 
-rm -f "$_build_dir/cloud_init.iso"
-if command -v "genisoimage" &> /dev/null; then
-  genisoimage \
-    -output "$_build_dir/cloud_init.iso" \
-    -volid cidata -rational-rock -joliet \
-    "$_config_dir/user-data" "$_config_dir/meta-data" "$_config_dir/network-config"
-elif command -v "hdiutil"; then
-  hdiutil makehybrid \
-    -o "$_build_dir/cloud_init.iso" \
-    -hfs -joliet -iso -default-volume-name cidata \
-    "$_config_dir"
-else
-  echo "genisoimage or hdiutil is required"
-  exit 1
-fi
+_http_pid=$!
+
+function cleanup()
+{
+  kill $_http_pid
+}
+
+trap cleanup EXIT
 
 echo
-echo "\`c2 cloud_init\` was written to $_config_dir/user-data and $_build_dir/cloud_init.iso"
+echo "\`c2 cloud_init --http\` is running in background serving cloud-init data at http://localhost:$_port/user-data"
 echo
 echo "QEMU will start the Ubuntu image in this shell."
 echo
@@ -64,5 +59,5 @@ qemu-system-x86_64 \
   -accel hvf \
   -net nic \
   -net user \
-  -drive "file=$_build_dir/$_ubuntu_img,index=0,format=qcow2,media=disk" \
-  -drive "file=$_build_dir/cloud_init.iso,media=cdrom"
+  -drive "file=$_build_dir/http.$_ubuntu_img,index=0,format=qcow2,media=disk" \
+  -smbios type=1,serial=ds='nocloud;s=http://10.0.2.2:'$_port'/'
