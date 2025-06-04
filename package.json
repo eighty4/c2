@@ -39,6 +39,7 @@
     "build": "tsc",
     "fmt": "prettier --write .",
     "fmtcheck": "prettier --check .",
+    "test": "bun test",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
