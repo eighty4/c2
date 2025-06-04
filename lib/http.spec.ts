@@ -43,7 +43,7 @@ Content-Transfer-Encoding: 7bit\r
 Content-Disposition: attachment; filename="security.sh"\r
 \r
 security\r
---BOUNDARY--\r
+--BOUNDARY\r
 `,
     )
 })

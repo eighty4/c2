@@ -86,7 +86,7 @@ export class MultipartMessage {
             this.#attachments
                 .map(a => a.toHTTP())
                 .join('\r\n--' + this.#boundary + '\r\n'),
-            '--' + this.#boundary + '--\r\n',
+            '--' + this.#boundary + '\r\n',
         ].join('\r\n')
     }
 }

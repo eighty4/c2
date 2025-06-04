@@ -51,7 +51,7 @@ Content-Transfer-Encoding: 7bit\r
 Content-Disposition: attachment; filename="2-init-cloud.sh"\r
 \r
 cushion\r
---${boundary}--\r
+--${boundary}\r
 `,
     )
 })
@@ -84,7 +84,7 @@ Content-Transfer-Encoding: 7bit\r
 Content-Disposition: attachment; filename="2-init-cloud.sh"\r
 \r
 cushion\r
---${boundary}--\r
+--${boundary}\r
 `,
     )
 })
