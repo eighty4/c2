@@ -96,6 +96,7 @@ jobs:
         env:
           CHANGELOG_TAG: ${{ inputs.semver-bump == 'prerelease' && 'Unreleased' || needs.create-git-tag.outputs.tag }}
           GIT_TAG: ${{ needs.create-git-tag.outputs.tag }}
+          NPM_TAG: ${{ inputs.semver-bump == 'prerelease' && 'next' || 'latest' }}
         run: |
           PKG_NAME=$(cat package.json | jq -r ".name")
           VERSION=${GIT_TAG:1}
