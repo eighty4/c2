@@ -8,7 +8,7 @@ on:
         description: Semver bump release type
         required: true
         type: choice
-        default: patch
+        default: prerelease
         options:
           - major
           - minor
@@ -25,7 +25,7 @@ jobs:
       - uses: oven-sh/setup-bun@v2
       - name: changelog entries
         if: ${{ inputs.semver-bump != 'prerelease' }}
-        run: bun scripts/changelog.ts check
+        run: bunx @eighty4/changelog check
 
   verify:
     uses: ./.github/workflows/ci_verify.yml
@@ -50,7 +50,7 @@ jobs:
       - if: inputs.semver-bump != 'prerelease'
         env:
           VERSION: ${{ steps.bump.outputs.version }}
-        run: bun scripts/changelog.ts rollover "v$VERSION"
+        run: bunx @eighty4/changelog rollover "v$VERSION"
       - id: push
         env:
           GIT_TAG: ${{ steps.bump.outputs.tag }}
@@ -97,7 +97,19 @@ jobs:
           CHANGELOG_TAG: ${{ inputs.semver-bump == 'prerelease' && 'Unreleased' || needs.create-git-tag.outputs.tag }}
           GIT_TAG: ${{ needs.create-git-tag.outputs.tag }}
         run: |
-          RELEASE_NOTES=$(VERSION=${GIT_TAG:1} ./scripts/make_release_notes.sh | base64 -w 0)
+          PKG_NAME=$(cat package.json | jq -r ".name")
+          VERSION=${GIT_TAG:1}
+          echo "#### Published to npm as [$PKG_NAME](https://www.npmjs.com/package/$PKG_NAME/v/$VERSION)" >> release_notes.md
+          echo >> release_notes.md
+          echo "\`\`\`npm i -g $PKG_NAME@$NPM_TAG\`\`\`" >> release_notes.md
+          echo >> release_notes.md
+
+          echo "## Release notes" >> release_notes.md
+          echo >> release_notes.md
+          bunx @eighty4/changelog get "$CHANGELOG_TAG" >> release_notes.md
+          echo >> release_notes.md
+
+          RELEASE_NOTES=$(cat release_notes.md | base64 -w 0)
           echo "notes=$RELEASE_NOTES" >> "$GITHUB_OUTPUT"
     outputs:
       notes: ${{ steps.gen.outputs.notes }}
@@ -109,7 +121,7 @@ jobs:
       contents: write
     secrets: inherit
     with:
-      title: 'c2 ${{ needs.create-git-tag.outputs.tag }}'
+      title: '${{ needs.create-git-tag.outputs.tag }}'
       release_notes: ${{ needs.create-release-notes.outputs.notes }}
       prerelease: ${{ inputs.semver-bump == 'prerelease' && 'true' || 'false' }}
       latest: ${{ inputs.semver-bump == 'prerelease' && 'false' || 'true' }}

@@ -24,8 +24,8 @@
   },
   "exports": {
     ".": {
-      "bun": "./lib_js/c2.api.js",
-      "node": "./lib/c2.api.ts"
+      "bun": "./lib/c2.api.ts",
+      "node": "./lib_js/c2.api.js"
     }
   },
   "imports": {
@@ -36,7 +36,7 @@
   },
   "types": "./lib_types",
   "scripts": {
-    "build": "tsc && chmod +x lib_js/c2.bin.js",
+    "build": "tsc",
     "fmt": "prettier --write .",
     "fmtcheck": "prettier --check .",
     "typecheck": "tsc --noEmit"
