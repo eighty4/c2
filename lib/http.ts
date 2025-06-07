@@ -29,8 +29,8 @@ async function sendUserData(res: ServerResponse, userDataDir: string) {
         const message = new MultipartMessage(
             await collectAttachments(userDataDir),
         )
-        res.writeHead(200, message.headers)
-        res.write(message.responseBody())
+        res.writeHead(200)
+        res.write(message.toHTTP())
     } catch (e: any) {
         console.error(500, '/user-data', e.message)
         res.writeHead(500)
