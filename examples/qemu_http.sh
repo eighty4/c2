@@ -2,6 +2,14 @@
 set -e
 
 _port=8202
+_dev="false"
+
+for arg in "$@"; do
+  if [[ "$arg" == "--dev" ]]; then
+    _dev="true"
+    break
+  fi
+done
 
 if ! command -v "qemu-system-x86_64" &> /dev/null; then
   echo "install QEMU to run this script"
@@ -27,7 +35,10 @@ mkdir -p "$_config_dir"
 touch "$_config_dir/meta-data"
 touch "$_config_dir/vendor-data"
 
-if command -v "c2" &> /dev/null; then
+if [[ "$_dev" == "true" ]]; then
+  (cd .. && pnpm build)
+  node ../lib_js/c2.bin.js cloud_init --http $_port > /dev/null 2>&1 &
+elif command -v "c2" &> /dev/null; then
   c2 cloud_init --http $_port > /dev/null 2>&1 &
 else
   npx --yes -p @eighty4/c2 c2 cloud_init --http $_port > /dev/null 2>&1 &
@@ -43,7 +54,8 @@ function cleanup()
 trap cleanup EXIT
 
 echo
-echo "\`c2 cloud_init --http\` is running in background serving cloud-init data at http://localhost:$_port/user-data"
+echo "\`c2 cloud_init --http\` is running in background serving the example user data"
+echo "    run \`curl http://localhost:$_port/user-data\` to see it"
 echo
 echo "QEMU will start the Ubuntu image in this shell."
 echo

@@ -19,11 +19,17 @@ LINODE_TOKEN=XYZ bun linode.ts
 
 ## Local Ubuntu with QEMU
 
+The following section is for Linux and OSX users.
+
 These QEMU scripts use `c2` to launch QEMU with Ubuntu initializing from the
 `cloud_init` directory. They explicitly use `qemu-system-x86_64` and can be
 tweaked for your OS architecture.
 
 Exit the QEMU VM with ctrl + a, release ctrl, press x.
+
+These scripts will run the globally installed `c2` or will run a released
+version of `c2` via `npx`. Run either script with `--dev` to build and run
+from the cloned repo sources.
 
 ### qemu_http.sh
 
