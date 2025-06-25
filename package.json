@@ -22,6 +22,7 @@
   "bin": {
     "c2": "./lib_js/c2.bin.js"
   },
+  "types": "./lib_types/c2.api.d.ts",
   "exports": {
     ".": {
       "bun": "./lib/c2.api.ts",
@@ -34,7 +35,6 @@
       "node": "./lib_js/*.js"
     }
   },
-  "types": "./lib_types",
   "scripts": {
     "build": "tsc",
     "fmt": "prettier --write .",

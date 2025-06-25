@@ -2,7 +2,10 @@
 
 ## [Unreleased]
 
-- ???
+### Fixed
+
+- TypeScript type declarations were broken by pointing to a
+  directory instead of the export entrypoint `.d.ts` file
 
 ## [v0.0.2] - 2025-06-07
 
