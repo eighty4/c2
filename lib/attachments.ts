@@ -1,5 +1,5 @@
-import { evalTemplateExpressions } from '#c2/expression'
-import { readDirListing, readToString } from '#c2/fs'
+import { evalTemplateExpressions } from './expression.ts'
+import { readDirListing, readToString } from './fs.ts'
 
 export type AttachmentType = 'cloud-config' | 'x-shellscript'
 

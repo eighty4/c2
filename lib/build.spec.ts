@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, expect, test } from 'bun:test'
-import { buildUserData } from '#c2/build'
-import { makeFile, makeTempDir, removeDir } from '#c2/fs.testing'
+import { buildUserData } from './build.ts'
+import { makeFile, makeTempDir, removeDir } from './fs.testing.ts'
 
 let tmpDir: string
 

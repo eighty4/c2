@@ -1,1 +1,1 @@
-export { type BuildUserDataOpts, buildUserData } from '#c2/build'
+export { type BuildUserDataOpts, buildUserData } from './build.ts'

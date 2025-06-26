@@ -1,5 +1,5 @@
 import { beforeEach, expect, test } from 'bun:test'
-import { MultipartMessage, MultipartAttachment } from '#c2/http'
+import { MultipartMessage, MultipartAttachment } from './http.ts'
 
 let message: MultipartMessage
 

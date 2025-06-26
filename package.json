@@ -22,17 +22,11 @@
   "bin": {
     "c2": "./lib_js/c2.bin.js"
   },
-  "types": "./lib_types/c2.api.d.ts",
   "exports": {
     ".": {
       "bun": "./lib/c2.api.ts",
-      "node": "./lib_js/c2.api.js"
-    }
-  },
-  "imports": {
-    "#c2/*": {
-      "bun": "./lib/*.ts",
-      "node": "./lib_js/*.js"
+      "node": "./lib_js/c2.api.js",
+      "types": "./lib_types/c2.api.d.ts"
     }
   },
   "scripts": {
@@ -53,6 +47,7 @@
   },
   "files": [
     "lib/*",
+    "!lib/*.spec.ts",
     "lib_js/*",
     "lib_types/*",
     "CHANGELOG.md"

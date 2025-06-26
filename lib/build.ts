@@ -1,5 +1,5 @@
-import { collectAttachments } from '#c2/attachments'
-import { MultipartMessage } from '#c2/http'
+import { collectAttachments } from './attachments.ts'
+import { MultipartMessage } from './http.ts'
 
 export type BuildUserDataOpts = {
     attachmentBoundary?: string

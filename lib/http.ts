@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto'
 import { createServer, type ServerResponse } from 'node:http'
-import { type Attachment, collectAttachments } from '#c2/attachments'
+import { type Attachment, collectAttachments } from './attachments.ts'
 
 export function startUserDataHttp(port: number, userDataDir: string) {
     const server = createServer((req, res) => {

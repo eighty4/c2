@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import { buildUserData } from '#c2/build'
-import { parseArgs, type ParsedArgs } from '#c2/cli'
-import { doesDirExist } from '#c2/fs'
-import { startUserDataHttp } from '#c2/http'
+import { buildUserData } from './build.ts'
+import { parseArgs, type ParsedArgs } from './cli.ts'
+import { doesDirExist } from './fs.ts'
+import { startUserDataHttp } from './http.ts'
 
 let args: ParsedArgs | undefined
 try {

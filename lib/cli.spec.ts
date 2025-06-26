@@ -1,5 +1,5 @@
 import { expect, test } from 'bun:test'
-import { parseArgs } from '#c2/cli'
+import { parseArgs } from './cli.ts'
 
 test('parseArgs with ts entrypoint', () => {
     expect(

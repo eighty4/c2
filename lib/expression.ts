@@ -1,5 +1,5 @@
 import MagicString from 'magic-string'
-import { readToString } from '#c2/fs'
+import { readToString } from './fs.ts'
 
 type TemplateExpression = {
     index: number

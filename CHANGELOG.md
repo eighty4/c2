@@ -4,8 +4,10 @@
 
 ### Fixed
 
-- TypeScript type declarations were broken by pointing to a
-  directory instead of the export entrypoint `.d.ts` file
+- TypeScript type declarations were broken because subpath imports
+  used internally in package were output in `.d.ts` files and
+  `package.json` pointed `types` to a directory instead of the
+  export entrypoint `.d.ts` file
 
 ## [v0.0.2] - 2025-06-07
 

@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, expect, test } from 'bun:test'
 import { join } from 'node:path'
-import { collectAttachments } from '#c2/attachments'
-import { makeFile, makeTempDir, removeDir } from '#c2/fs.testing'
+import { collectAttachments } from './attachments.ts'
+import { makeFile, makeTempDir, removeDir } from './fs.testing.ts'
 
 let tmpDir: string
 
