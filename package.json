@@ -20,13 +20,13 @@
     "node": ">=23"
   },
   "bin": {
-    "c2": "./lib_js/c2.bin.js"
+    "c2": "./lib_js/bin.js"
   },
   "exports": {
     ".": {
-      "bun": "./lib/c2.api.ts",
-      "node": "./lib_js/c2.api.js",
-      "types": "./lib_types/c2.api.d.ts"
+      "bun": "./lib/api.ts",
+      "node": "./lib_js/api.js",
+      "types": "./lib_types/api.d.ts"
     }
   },
   "scripts": {

@@ -7,11 +7,7 @@ export type ParsedArgs =
           userDataDir: string
       }
 
-const SCRIPT_SUFFIXES = Object.freeze([
-    '/c2',
-    '/lib_js/c2.bin.js',
-    '/lib/c2.bin.ts',
-])
+const SCRIPT_SUFFIXES = Object.freeze(['/c2', '/lib_js/bin.js', '/lib/bin.ts'])
 
 export function parseArgs(input?: Array<string>): ParsedArgs {
     if (!input) {

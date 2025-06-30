@@ -9,17 +9,16 @@ let args: ParsedArgs | undefined
 try {
     args = parseArgs()
 } catch (e: any) {
-    if (e.message) {
-        console.error(e.message)
-    }
+    errorExit(e.message)
 }
 
 if (!args || args.help) {
     const optional = (s: string) => `\u001b[90m${s}\u001b[0m`
     const required = (s: string) => `\u001b[1m${s}\u001b[0m`
-    errorExit(
+    console.error(
         `c2 ${optional('[[--base64] | [--http PORT]]')} ${required('USER_DATA_DIR')}`,
     )
+    process.exit(1)
 }
 
 if (!(await doesDirExist(args.userDataDir))) {
@@ -46,6 +45,10 @@ try {
 }
 
 function errorExit(msg: string): never {
-    console.error(msg)
+    console.error(errorText('error:'), msg)
     process.exit(1)
+}
+
+function errorText(s: string): string {
+    return `\u001b[1;31m${s}\u001b[0m`
 }

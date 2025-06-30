@@ -5,7 +5,7 @@ test('parseArgs with ts entrypoint', () => {
     expect(
         parseArgs([
             '/Users/who/.bun/bin/bun',
-            '/Users/who/user-data/lib/c2.bin.ts',
+            '/Users/who/user-data/lib/bin.ts',
             'user_data_dir',
         ]),
     ).toStrictEqual({
@@ -31,7 +31,7 @@ test('parseArgs with js entrypoint', () => {
     expect(
         parseArgs([
             '/Users/who/.nvm/versions/node/v23.7.0/bin/node',
-            '/Users/who/user-data/lib_js/c2.bin.js',
+            '/Users/who/user-data/lib_js/bin.js',
             'user_data_dir',
         ]),
     ).toStrictEqual({
@@ -50,7 +50,7 @@ test('parseArgs errors without USER_DATA_DIR', () => {
     expect(() =>
         parseArgs([
             '/Users/who/.bun/bin/bun',
-            '/Users/who/user-data/lib/c2.bin.ts',
+            '/Users/who/user-data/lib/bin.ts',
         ]),
     ).toThrow()
 })
@@ -59,7 +59,7 @@ test('parseArgs errors with extra USER_DATA_DIR', () => {
     expect(() =>
         parseArgs([
             '/Users/who/.bun/bin/bun',
-            '/Users/who/user-data/lib/c2.bin.ts',
+            '/Users/who/user-data/lib/bin.ts',
             'user_data_dir',
             'some_other_arg',
         ]),
@@ -70,7 +70,7 @@ test('parseArgs with --base64', () => {
     expect(
         parseArgs([
             '/Users/who/.bun/bin/bun',
-            '/Users/who/user-data/lib/c2.bin.ts',
+            '/Users/who/user-data/lib/bin.ts',
             '--base64',
             'user_data_dir',
         ]),
@@ -84,7 +84,7 @@ test('parseArgs with --http PORT', () => {
     expect(
         parseArgs([
             '/Users/who/.bun/bin/bun',
-            '/Users/who/user-data/lib/c2.bin.ts',
+            '/Users/who/user-data/lib/bin.ts',
             '--http',
             '6666',
             'user_data_dir',
@@ -96,7 +96,7 @@ test('parseArgs with --http bunk', () => {
     expect(() =>
         parseArgs([
             '/Users/who/.bun/bin/bun',
-            '/Users/who/user-data/lib/c2.bin.ts',
+            '/Users/who/user-data/lib/bin.ts',
             '--http',
             'bunk',
             'user_data_dir',
@@ -108,7 +108,7 @@ test('parseArgs with --http without PORT', () => {
     expect(() =>
         parseArgs([
             '/Users/who/.bun/bin/bun',
-            '/Users/who/user-data/lib/c2.bin.ts',
+            '/Users/who/user-data/lib/bin.ts',
             'user_data_dir',
             '--http',
         ]),

@@ -31,9 +31,9 @@ function compareAttachmentFilenames(
     a1: Attachment,
     a2: Attachment,
 ): 1 | 0 | -1 {
-    if (a1.filename === a2.filename) return 0
+    if (a1.filename < a2.filename) return -1
     if (a1.filename > a2.filename) return 1
-    return -1
+    return 0
 }
 
 export function resolveAttachmentType(

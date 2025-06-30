@@ -2,7 +2,9 @@
 
 ## [Unreleased]
 
-- ???
+### Fixed
+
+- Cleaning up console output of errors and CLI usage
 
 ## [v0.0.3] - 2025-06-26
 
