@@ -22,10 +22,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
       - name: changelog entries
         if: ${{ inputs.semver-bump != 'prerelease' }}
-        run: bunx @eighty4/changelog check
+        run: npx -y @eighty4/changelog check
 
   verify:
     uses: ./.github/workflows/ci_verify.yml
@@ -38,10 +40,10 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 23
-      - uses: oven-sh/setup-bun@v2
+          node-version: 24
       - id: bump
         run: |
           GIT_TAG=$(npm version ${{ inputs.semver-bump }} --no-git-tag-version)
@@ -50,7 +52,7 @@ jobs:
       - if: inputs.semver-bump != 'prerelease'
         env:
           VERSION: ${{ steps.bump.outputs.version }}
-        run: bunx @eighty4/changelog rollover "v$VERSION"
+        run: npx -y @eighty4/changelog rollover "v$VERSION"
       - id: push
         env:
           GIT_TAG: ${{ steps.bump.outputs.tag }}
@@ -74,14 +76,18 @@ jobs:
         with:
           fetch-tags: true
           ref: ${{ needs.create-git-tag.outputs.tag }}
-      - uses: oven-sh/setup-bun@v2
-      - run: bun i
-      - run: bun run build
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      - run: pnpm i
+      - run: pnpm run build
       - name: publish
         env:
-          NPM_CONFIG_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
           NPM_TAG: ${{ inputs.semver-bump == 'prerelease' && 'next' || 'latest' }}
-        run: bun publish --access public --tag $NPM_TAG
+        run: pnpm publish --access public --tag $NPM_TAG --no-git-checks
 
   create-release-notes:
     runs-on: ubuntu-latest
@@ -91,7 +97,9 @@ jobs:
         with:
           fetch-tags: true
           ref: ${{ needs.create-git-tag.outputs.tag }}
-      - uses: oven-sh/setup-bun@v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
       - id: gen
         env:
           CHANGELOG_TAG: ${{ inputs.semver-bump == 'prerelease' && 'Unreleased' || needs.create-git-tag.outputs.tag }}
@@ -107,7 +115,7 @@ jobs:
 
           echo "## Release notes" >> release_notes.md
           echo >> release_notes.md
-          bunx @eighty4/changelog get "$CHANGELOG_TAG" >> release_notes.md
+          npx -y @eighty4/changelog get "$CHANGELOG_TAG" >> release_notes.md
           echo >> release_notes.md
 
           RELEASE_NOTES=$(cat release_notes.md | base64 -w 0)

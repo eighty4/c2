@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
+import { stat } from 'node:fs/promises'
 import { buildUserData } from './build.ts'
 import { parseArgs, type ParsedArgs } from './cli.ts'
-import { doesDirExist } from './fs.ts'
 import { startUserDataHttp } from './http.ts'
 
 let args: ParsedArgs | undefined
@@ -51,4 +51,12 @@ function errorExit(msg: string): never {
 
 function errorText(s: string): string {
     return `\u001b[1;31m${s}\u001b[0m`
+}
+
+async function doesDirExist(p: string): Promise<boolean> {
+    try {
+        return (await stat(p)).isDirectory()
+    } catch (ignore) {
+        return false
+    }
 }

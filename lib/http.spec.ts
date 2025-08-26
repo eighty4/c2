@@ -1,4 +1,5 @@
-import { beforeEach, expect, test } from 'bun:test'
+import assert from 'node:assert/strict'
+import { beforeEach, test } from 'node:test'
 import { MultipartMessage, MultipartAttachment } from './http.ts'
 
 let message: MultipartMessage
@@ -26,7 +27,8 @@ beforeEach(() => {
 })
 
 test('multipart message creates cloud-init payload', () => {
-    expect(message.toHTTP()).toStrictEqual(
+    assert.equal(
+        message.toHTTP(),
         `Content-Type: multipart/mixed; boundary=BOUNDARY\r
 MIME-Version: 1.0\r
 Number-Attachments: 2\r
@@ -49,7 +51,7 @@ security\r
 })
 
 test('multipart message creates HTTP headers', () => {
-    expect(message.headers).toStrictEqual({
+    assert.deepEqual(message.headers, {
         'Content-Type': 'multipart/mixed; boundary=BOUNDARY',
         'MIME-Version': '1.0',
         'Number-Attachments': '2',

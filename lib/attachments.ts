@@ -1,5 +1,5 @@
+import { readdir, readFile } from 'node:fs/promises'
 import { evalTemplateExpressions } from './expression.ts'
-import { readDirListing, readToString } from './fs.ts'
 
 export type AttachmentType = 'cloud-config' | 'x-shellscript'
 
@@ -14,11 +14,11 @@ export interface Attachment {
 export async function collectAttachments(
     dir: string,
 ): Promise<Array<Attachment>> {
-    const filenames = await readDirListing(dir)
+    const filenames = await readdir(dir)
     const attachments = await Promise.all(
         filenames.map(async filename => {
             const path = `${dir}/${filename}`
-            const source = await readToString(path)
+            const source = await readFile(path, 'utf-8')
             const type = resolveAttachmentType(filename, source)
             const content = await evalTemplateExpressions(source)
             return { content, filename, path, type, source }

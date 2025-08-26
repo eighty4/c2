@@ -1,4 +1,6 @@
-import { afterEach, beforeEach, expect, test } from 'bun:test'
+import assert from 'node:assert/strict'
+import { randomUUID } from 'node:crypto'
+import { afterEach, beforeEach, test } from 'node:test'
 import { buildUserData } from './build.ts'
 import { makeFile, makeTempDir, removeDir } from './fs.testing.ts'
 
@@ -13,7 +15,7 @@ afterEach(async () => removeDir(tmpDir))
 test('build user data of single file', async () => {
     const initCloudYml = '#cloud-config\nwhoopie'
     await makeFile('init-cloud.yml', initCloudYml, tmpDir)
-    expect(await buildUserData(tmpDir)).toStrictEqual(initCloudYml)
+    assert.equal(await buildUserData(tmpDir), initCloudYml)
 })
 
 test('build user data of single file with template expression', async () => {
@@ -24,17 +26,16 @@ test('build user data of single file with template expression', async () => {
         `#cloud-config\n\${{ file('${whoopie}/whoopie')}}`,
         tmpDir,
     )
-    expect(await buildUserData(tmpDir)).toStrictEqual('#cloud-config\nwhoopie')
+    assert.equal(await buildUserData(tmpDir), '#cloud-config\nwhoopie')
     await removeDir(whoopie)
 })
 
 test('build user data multipart message', async () => {
     await makeFile('1-init-cloud.yml', '#cloud-config\nwhoopie', tmpDir)
     await makeFile('2-init-cloud.sh', 'cushion', tmpDir)
-    const boundary = Bun.randomUUIDv7()
-    expect(
+    const boundary = randomUUID()
+    assert.equal(
         await buildUserData(tmpDir, { attachmentBoundary: boundary }),
-    ).toStrictEqual(
         `Content-Type: multipart/mixed; boundary=${boundary}\r
 MIME-Version: 1.0\r
 Number-Attachments: 2\r
@@ -65,10 +66,9 @@ test('build user data multipart with template expression', async () => {
         tmpDir,
     )
     await makeFile('2-init-cloud.sh', 'cushion', tmpDir)
-    const boundary = Bun.randomUUIDv7()
-    expect(
+    const boundary = randomUUID()
+    assert.equal(
         await buildUserData(tmpDir, { attachmentBoundary: boundary }),
-    ).toStrictEqual(
         `Content-Type: multipart/mixed; boundary=${boundary}\r
 MIME-Version: 1.0\r
 Number-Attachments: 2\r

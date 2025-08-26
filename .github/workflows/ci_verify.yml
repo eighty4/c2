@@ -1,5 +1,5 @@
 name: Verify
-run-name: "Verify ${{ github.pull_request && format('PR: {0}', github.pull_request.title) || github.ref }}"
+run-name: "Verify ${{ github.pull_request && format('PR {0}: {1}', github.event.pull_request.number, github.pull_request.title) || format('{0}: {1}', github.ref, github.event.head_commit.message) }}"
 on:
   push:
   pull_request:
@@ -10,10 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: rm /usr/local/bin/node
-      - uses: oven-sh/setup-bun@v2
-      - run: bun i
-      - run: bun test
-      - run: bun typecheck
-      - run: bun fmtcheck
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm i
+      - run: pnpm test
+      - run: pnpm typecheck
+      - run: pnpm fmtcheck
       - run: echo 'Ba'

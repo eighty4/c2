@@ -5,7 +5,7 @@
 Many cloud providers support launching VMs from their JavaScript SDKs.
 This allows `c2` to integrate directly into your DevOps workflows.
 
-The TypeScript examples will require `bun i` or `pnpm i` in this directory
+The TypeScript examples will require `npm i` or `pnpm i` in this directory
 before running.
 
 ### linode.ts
@@ -13,7 +13,7 @@ before running.
 Create a Linode account and run with a `LINODE_TOKEN` env var:
 
 ```
-LINODE_TOKEN=XYZ bun linode.ts
+LINODE_TOKEN=XYZ node linode.ts
 ```
 
 ## Local Ubuntu with QEMU

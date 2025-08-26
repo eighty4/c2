@@ -12,9 +12,6 @@ npm i -g @eighty4/c2
 c2 -h
 ```
 
-(tests use `bun:test` so [install Bun](https://bun.sh/docs/installation)
-for contributing!)
-
 ## Using the CLI program
 
 ```

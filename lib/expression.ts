@@ -1,5 +1,5 @@
+import { readFile } from 'node:fs/promises'
 import MagicString from 'magic-string'
-import { readToString } from './fs.ts'
 
 type TemplateExpression = {
     index: number
@@ -56,7 +56,7 @@ async function evaluate(expression: string): Promise<string> {
             }
             path = `${process.env.HOME}${path.substring(1)}`
         }
-        return readToString(path)
+        return await readFile(path, 'utf-8')
     }
 
     throw new Error(`unsupported expression: ${expression}`)

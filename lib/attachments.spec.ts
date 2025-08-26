@@ -1,5 +1,6 @@
-import { afterEach, beforeEach, expect, test } from 'bun:test'
+import assert from 'node:assert/strict'
 import { join } from 'node:path'
+import { afterEach, beforeEach, test } from 'node:test'
 import { collectAttachments } from './attachments.ts'
 import { makeFile, makeTempDir, removeDir } from './fs.testing.ts'
 
@@ -11,14 +12,15 @@ afterEach(async () => await removeDir(tmpDir))
 
 test('collect throws error for unknown filetype', async () => {
     await makeFile('init-cloud', 'whoopie', tmpDir)
-    await expect(() => collectAttachments(tmpDir)).toThrow(
-        'init-cloud is an unsupported file type',
+    await assert.rejects(
+        () => collectAttachments(tmpDir),
+        new Error('init-cloud is an unsupported file type'),
     )
 })
 
 test('collect cloud config yml', async () => {
     await makeFile('init-cloud.yml', '#cloud-config\nwhoopie', tmpDir)
-    expect(await collectAttachments(tmpDir)).toStrictEqual([
+    assert.deepEqual(await collectAttachments(tmpDir), [
         {
             path: join(tmpDir, 'init-cloud.yml'),
             content: '#cloud-config\nwhoopie',
@@ -31,7 +33,7 @@ test('collect cloud config yml', async () => {
 
 test('collect cloud config yaml', async () => {
     await makeFile('init-cloud.yaml', '#cloud-config\nwhoopie', tmpDir)
-    expect(await collectAttachments(tmpDir)).toStrictEqual([
+    assert.deepEqual(await collectAttachments(tmpDir), [
         {
             path: join(tmpDir, 'init-cloud.yaml'),
             content: '#cloud-config\nwhoopie',
@@ -44,21 +46,23 @@ test('collect cloud config yaml', async () => {
 
 test('collect throws error when yml does not have #cloud-config comment', async () => {
     await makeFile('init-cloud.yml', 'whoopie', tmpDir)
-    await expect(() => collectAttachments(tmpDir)).toThrow(
-        'YAML cloud config must start with a #cloud-config comment',
+    await assert.rejects(
+        () => collectAttachments(tmpDir),
+        new Error('YAML cloud config must start with a #cloud-config comment'),
     )
 })
 
 test('collect throws error when yaml does not have #cloud-config comment', async () => {
     await makeFile('init-cloud.yaml', 'whoopie', tmpDir)
-    await expect(() => collectAttachments(tmpDir)).toThrow(
-        'YAML cloud config must start with a #cloud-config comment',
+    await assert.rejects(
+        () => collectAttachments(tmpDir),
+        new Error('YAML cloud config must start with a #cloud-config comment'),
     )
 })
 
 test('collect shell script', async () => {
     await makeFile('init-cloud.sh', 'whoopie', tmpDir)
-    expect(await collectAttachments(tmpDir)).toStrictEqual([
+    assert.deepEqual(await collectAttachments(tmpDir), [
         {
             path: join(tmpDir, 'init-cloud.sh'),
             content: 'whoopie',
@@ -77,7 +81,7 @@ test('evals template expressions', async () => {
         `\${{ file('${resourceTmpDir}/whoopie') }}`,
         tmpDir,
     )
-    expect(await collectAttachments(tmpDir)).toStrictEqual([
+    assert.deepEqual(await collectAttachments(tmpDir), [
         {
             path: tmpDir + '/init-cloud.sh',
             content: 'whoopie',
@@ -92,7 +96,7 @@ test('evals template expressions', async () => {
 test('sorts attachments by filename', async () => {
     await makeFile('01-init-cloud.sh', 'whoopie', tmpDir)
     await makeFile('02-init-cloud.sh', 'whoopie', tmpDir)
-    expect(await collectAttachments(tmpDir)).toStrictEqual([
+    assert.deepEqual(await collectAttachments(tmpDir), [
         {
             path: join(tmpDir, '01-init-cloud.sh'),
             content: 'whoopie',

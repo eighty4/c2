@@ -1,4 +1,4 @@
-import { mkdtemp, rm } from 'node:fs/promises'
+import { mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
@@ -8,7 +8,7 @@ export async function makeFile(
     pathPrefix?: string,
 ): Promise<string> {
     const p = !!pathPrefix ? join(pathPrefix, path) : path
-    await Bun.file(p).write(content)
+    await writeFile(p, content)
     return p
 }
 

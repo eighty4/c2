@@ -1,5 +1,4 @@
-bun.lock
+pnpm-lock.yaml
 examples/**/*.img
 examples/**/*.iso
 lib_types/**/*.d.ts
-

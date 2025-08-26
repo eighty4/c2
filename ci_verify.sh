@@ -29,7 +29,7 @@ fi
 
 # run through all the checks done for ci
 
-bun test
-bun --bun run build
-bun --bun run fmtcheck
-
+pnpm test
+pnpm build
+pnpm fmtcheck
+pnpm typecheck
