@@ -1,6 +1,6 @@
-Unit tests use `bun:test` so [install Bun](https://bun.sh/docs/installation) before contributing!
+Unit tests use `node:test` so [install a recent version of Node](https://nodejs.org/en/download) before contributing!
 
-The `ci_verify.sh` script will perform all checks required by a PR and uses `bun test` and the `typecheck` and `fmtcheck` package.json scripts.
+The `ci_verify.sh` script will perform all checks required by a PR and uses `node --test` and the `typecheck` and `fmtcheck` package.json scripts.
 
 The script has flags to create symlinks to itself in `.git/hooks`:
 
@@ -9,7 +9,7 @@ The script has flags to create symlinks to itself in `.git/hooks`:
 ./ci_verify.sh --on-git-push
 ```
 
-Type checking with `bun typecheck` will run `tsc`.
+Type checking with `node typecheck` will run `tsc`.
 
 Formatting is provided by `prettier`.
 

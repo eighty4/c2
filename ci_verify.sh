@@ -21,9 +21,9 @@ for arg in "$@"; do
   esac
 done
 
-if ! command -v "bun" &> /dev/null; then
-  _url="https://bun.sh/docs/installation"
-  echo "\033[31merror:\033[0m Bun is required for contributing\n\n  $_url\n"
+if ! command -v "pnpm" &> /dev/null; then
+  _url="https://pnpm.io/installation"
+  echo "\033[31merror:\033[0m pnpm is required for contributing\n\n  $_url\n"
   exit 1
 fi
 
