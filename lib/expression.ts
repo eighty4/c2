@@ -1,5 +1,4 @@
 import { readFile } from 'node:fs/promises'
-import MagicString from 'magic-string'
 
 type TemplateExpression = {
     index: number
@@ -23,15 +22,18 @@ export async function evalTemplateExpressions(
     if (!expressions.length) {
         return content
     }
-    const ms = new MagicString(content)
+    let offset = 0
     for (const expression of expressions) {
-        ms.update(
-            expression.index,
-            expression.index + expression.outie.length,
-            await evaluate(expression.innie),
-        )
+        const expressionResult = await evaluate(expression.innie)
+        content =
+            content.substring(0, expression.index + offset) +
+            expressionResult +
+            content.substring(
+                expression.index + expression.outie.length + offset,
+            )
+        offset += expressionResult.length - expression.outie.length
     }
-    return ms.toString()
+    return content
 }
 
 async function evaluate(expression: string): Promise<string> {

@@ -2,7 +2,10 @@
 
 ## [Unreleased]
 
-- ???
+### Fixed
+
+- Rewrite code using Bun APIs and npm packages to remove
+  package install size and dependency on specific runtime
 
 ## [v0.0.4] - 2025-06-30
 
