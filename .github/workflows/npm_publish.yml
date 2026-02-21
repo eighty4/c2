@@ -71,6 +71,8 @@ jobs:
   npm-publish:
     needs: create-git-tag
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     steps:
       - uses: actions/checkout@v4
         with:
