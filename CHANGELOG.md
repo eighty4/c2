@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+- ???
+
+## [v0.0.5] - 2026-02-21
+
 ### Fixed
 
 - Rewrite code using Bun APIs and npm packages to remove
@@ -31,7 +35,8 @@
 - Evaluate env() and file() expressions in user data
 - Merge multiple user data into a MIME multipart message
 
-[Unreleased]: https://github.com/eighty4/c2/compare/v0.0.4...HEAD
+[Unreleased]: https://github.com/eighty4/c2/compare/v0.0.5...HEAD
+[v0.0.5]: https://github.com/eighty4/c2/compare/v0.0.4...v0.0.5
 [v0.0.4]: https://github.com/eighty4/c2/compare/v0.0.3...v0.0.4
 [v0.0.3]: https://github.com/eighty4/c2/compare/v0.0.2...v0.0.3
 [v0.0.2]: https://github.com/eighty4/c2/releases/tag/v0.0.2
